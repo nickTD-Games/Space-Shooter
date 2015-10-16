@@ -17,15 +17,23 @@ public class PlayerController : MonoBehaviour {
 	public GameObject shot;
 	public Transform transformOfShotSpawn;
 
-	private float nextFireAt = 0.0f;
-
 	private Rigidbody rb;
 
+	private float nextFireAt;
+	private bool autoFire;
+
 	void Start() {
+		nextFireAt = 0.0f;
+		autoFire = false;
+
 		rb = GetComponent<Rigidbody> ();
 	}
 
 	void Update() {
+		if (Input.GetKeyUp (KeyCode.V)) {
+			autoFire = !autoFire;
+		}
+
 		if (Fire () && Time.time > nextFireAt) {
 			nextFireAt = Time.time + fireRateInSeconds;
 			Instantiate (shot, transformOfShotSpawn.position, transformOfShotSpawn.rotation);
@@ -33,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	bool Fire() {
-		return Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Mouse0);
+		return autoFire || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Mouse0);
 	}
 
 	void FixedUpdate() {
