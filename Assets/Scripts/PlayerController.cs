@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour {
 	void Update() {
 		if (Input.GetKeyUp (KeyCode.V)) {
 			autoFire = !autoFire;
+		} else if (Input.GetKeyUp (KeyCode.P)) {
+			Time.timeScale = Time.timeScale == 0 ? 1 : 0;
 		}
 
 		if (Fire () && Time.time > nextFireAt) {
