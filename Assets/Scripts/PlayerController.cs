@@ -43,7 +43,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	bool Fire() {
-		return autoFire || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Mouse0);
+		return AutoFire() || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Mouse0);
+	}
+
+	bool AutoFire() {
+		return autoFire && GameObject.FindWithTag("Enemy");
 	}
 
 	void FixedUpdate() {
