@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 [System.Serializable]
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour {
 	public float tilt;
 	public Boundary boundary;
 
+	public Text upgradeWeaponText;
+	public float upgradeWeaponTextVisibleDuration;
+
 	public WeaponSystem[] weapons;
 
 	private int currentWeaponLevel;
@@ -26,16 +30,30 @@ public class PlayerController : MonoBehaviour {
 		for (int i = 0; i < weapons.Length; i++) {
 			if (i > currentWeaponLevel && score > weapons[i].requiredScore) {
 				weaponLevel = i;
+				StartCoroutine(ShowUpgradeWeaponTextForLevel (weaponLevel));
 			}
 		}
 
 		currentWeaponLevel = weaponLevel;
 	}
 
+	IEnumerator ShowUpgradeWeaponTextForLevel(int level) {
+		if (!upgradeWeaponText.enabled) {
+			upgradeWeaponText.enabled = true;
+
+			upgradeWeaponText.text = weapons[level].upgradeString;
+
+			yield return new WaitForSeconds(upgradeWeaponTextVisibleDuration);
+
+			upgradeWeaponText.text = "";
+			upgradeWeaponText.enabled = false;
+		}
+	}
+
 	void Start() {
 		autoFire = false;
-
 		currentWeaponLevel = 0;
+		upgradeWeaponText.enabled = false;
 
 		rb = GetComponent<Rigidbody> ();
 	}

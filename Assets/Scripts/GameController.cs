@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
 	public float spawnWaitTime;
 	public float waveWaitTime;
 
-	private int score;
+	public int score;
 
 	private bool gameOver;
 	private bool restart;
@@ -48,7 +48,6 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Start () {
-		score = 0;
 		updateScoreText ();
 
 		gameOver = false;

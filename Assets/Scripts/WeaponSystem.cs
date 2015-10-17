@@ -7,6 +7,8 @@ public class WeaponSystem : MonoBehaviour {
 	public Transform[] weapons;
 	public int requiredScore;
 
+	public string upgradeString;
+
 	public float fireRateInSeconds;
 	private float nextFireAt;
 
