@@ -3,7 +3,9 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class GameController : MonoBehaviour {
-	
+
+	public PlayerController player;
+
 	public GameObject[] hazards;
 	public Vector3 spawnValues;
 
@@ -23,7 +25,12 @@ public class GameController : MonoBehaviour {
 
 	public void AddScore (int deltaScore) {
 		score += deltaScore;
+		upgradePlayersWeapon ();
 		updateScoreText ();
+	}
+
+	void upgradePlayersWeapon() {
+		player.UpgradeWeaponWithScore (score);
 	}
 
 	public void GameOver() {

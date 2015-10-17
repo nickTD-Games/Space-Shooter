@@ -11,20 +11,31 @@ public class PlayerController : MonoBehaviour {
 
 	public float speed;
 	public float tilt;
-	public float fireRateInSeconds;
 	public Boundary boundary;
 
-	public GameObject shot;
-	public Transform transformOfShotSpawn;
+	public WeaponSystem[] weapons;
+
+	private int currentWeaponLevel;
 
 	private Rigidbody rb;
-
-	private float nextFireAt;
+	
 	private bool autoFire;
 
+	public void UpgradeWeaponWithScore(int score) {
+		int weaponLevel = currentWeaponLevel;
+		for (int i = 0; i < weapons.Length; i++) {
+			if (i > currentWeaponLevel && score > weapons[i].requiredScore) {
+				weaponLevel = i;
+			}
+		}
+
+		currentWeaponLevel = weaponLevel;
+	}
+
 	void Start() {
-		nextFireAt = 0.0f;
 		autoFire = false;
+
+		currentWeaponLevel = 0;
 
 		rb = GetComponent<Rigidbody> ();
 	}
@@ -36,17 +47,20 @@ public class PlayerController : MonoBehaviour {
 			Time.timeScale = Time.timeScale == 0 ? 1 : 0;
 		}
 
-		if (Fire () && Time.time > nextFireAt) {
-			nextFireAt = Time.time + fireRateInSeconds;
-			Instantiate (shot, transformOfShotSpawn.position, transformOfShotSpawn.rotation);
+		if (ShouldFire ()) {
+			Fire ();
 		}
 	}
 
-	bool Fire() {
-		return AutoFire() || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Mouse0);
+	void Fire() {
+		weapons [currentWeaponLevel].Fire ();
 	}
 
-	bool AutoFire() {
+	bool ShouldFire() {
+		return ShouldAutoFire() || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Mouse0);
+	}
+
+	bool ShouldAutoFire() {
 		return autoFire && GameObject.FindWithTag("Enemy");
 	}
 
